@@ -55,9 +55,9 @@ def matrix_to_img(matrix):
     for line in matrix:
         line_aux = []
         for pix in line:
-            line_aux.append(min(max(pix["R"],0),255))
-            line_aux.append(min(max(pix["G"],0),255))
-            line_aux.append(min(max(pix["B"],0),255))
+            line_aux.append(min(max(round(pix["R"]),0),255))
+            line_aux.append(min(max(round(pix["G"]),0),255))
+            line_aux.append(min(max(round(pix["B"]),0),255))
         img.append(line_aux)
     return img
 
@@ -67,16 +67,26 @@ def xy_img(matrix):
         new_line = []
         for pix in line:
             new_line.append({
-                "R": pix["y"]-pix["x"],
-                "G": pix["y"],
-                "B": pix["x"],
+                "R": pix["B"],
+                "G": pix["R"],
+                "B": pix["G"],
             })
         new_img.append(new_line)
     return new_img
 
+def read_img(path):
+    width, height, rows, info = png.Reader(filename=path).asDirect()
+    print(info)
+    if info['greyscale']:
+        if info['alpha']:
+            print("")
+            return
+        else:
+            return
+    elif info['alpha']:
+        matrix = img_to_matrix(rows)
+        img2 = matrix_to_img(matrix)
+        png.from_array(img2,"RGB").save("random.png")
 
-img = gradient_img(500,500)
-matrix = img_to_matrix(img)
-new_mat = xy_img(matrix)
-img2 = matrix_to_img(new_mat)
-png.from_array(img2,"RGB").save("random.png")
+
+read_img("img/2.png")

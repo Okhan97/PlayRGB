@@ -17,3 +17,4 @@ pip install Pillow
 --
 Looks like pypng will be my choice ... at least at first
 --
+I really don't know how long this project is going to take, the more I think about it the more I get new ideas
